@@ -1,5 +1,6 @@
 package dev.ahmedmourad.college.oral.ai
 
+import com.jakewharton.picnic.RowDsl
 import com.jakewharton.picnic.table
 import dev.ahmedmourad.college.oral.ai.Direction.*
 import dev.ahmedmourad.college.oral.ai.strategies.UCS
@@ -36,6 +37,27 @@ private fun buildGameMat(): GameMat {
 }
 
 fun GameMat.print(target: Node, path: List<Action>) {
+
+    fun RowDsl.addCell(x: Int, y: Int) {
+        if (this@print.isAnObstacle(x, y)) {
+            cell("X")
+        } else if (target.equals(x, y)) {
+            cell("T")
+        } else {
+            val p = path.firstOrNull { it.target.equals(x, y) }
+            if (p != null) {
+                when (p.direction) {
+                    X_POSITIVE -> cell("→")
+                    X_NEGATIVE -> cell("←")
+                    Y_POSITIVE -> cell("↓")
+                    Y_NEGATIVE -> cell("↑")
+                }
+            } else {
+                cell(" ")
+            }
+        }
+    }
+
     table {
         cellStyle {
             border = true
@@ -46,25 +68,7 @@ fun GameMat.print(target: Node, path: List<Action>) {
         repeat(this@print.size.height) { y ->
             row {
                 repeat(this@print.size.width) { x ->
-                    if (this@print.isAnObstacle(x, y)) {
-                        cell("X")
-                    } else if (target.x == x && target.y == y) {
-                        cell("T")
-                    } else {
-                        val p = path.firstOrNull {
-                            it.target.x == x && it.target.y == y
-                        }
-                        if (p != null) {
-                            when (p.direction) {
-                                X_POSITIVE -> cell("→")
-                                X_NEGATIVE -> cell("←")
-                                Y_POSITIVE -> cell("↓")
-                                Y_NEGATIVE -> cell("↑")
-                            }
-                        } else {
-                            cell(" ")
-                        }
-                    }
+                    addCell(x, y)
                 }
             }
         }
