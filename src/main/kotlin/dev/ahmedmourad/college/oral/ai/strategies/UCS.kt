@@ -3,12 +3,11 @@ package dev.ahmedmourad.college.oral.ai.strategies
 import dev.ahmedmourad.college.oral.ai.*
 
 class UCS : Strategy {
-
     override fun findPath(
         traversable: Traversable,
         initialState: State,
         target: Node
-    ): State? {
+    ): Answer {
 
         val visitedNodes = mutableSetOf<Node>()
         val queue = mutableListOf(initialState)
@@ -33,15 +32,10 @@ class UCS : Strategy {
             visitedNodes.add(currentState.position)
         }
 
-        return queue.minByOrNull { it.totalCost }
-    }
-}
+        val correct = queue
+            .minByOrNull { it.totalCost }
+            ?: return Answer(null)
 
-fun State.takeAction(action: Action): State {
-    return State(
-        position = action.target,
-        direction = action.direction,
-        totalCost = this.totalCost + action.cost,
-        path = this.path + action
-    )
+        return Answer(correct, queue.minus(correct).toSet())
+    }
 }

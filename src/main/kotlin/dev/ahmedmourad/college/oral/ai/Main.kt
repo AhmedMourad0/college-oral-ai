@@ -8,13 +8,19 @@ fun main() {
     val mat = buildGameMat()
     val initialState = buildInitialState(Node(0, 2), X_POSITIVE)
     val target = Node(2, 2)
-    val state = UCS().findPath(
+    val answer = UCS().findPath(
         traversable = mat,
         initialState = initialState,
         target = target
     )
-    mat.print(target, state?.path.orEmpty())
-    println(state?.totalCost)
+    mat.print(target, answer.correct?.path.orEmpty())
+    println(answer.correct?.totalCost)
+
+    answer.others.forEach { lessOptimalAnswer ->
+        println()
+        mat.print(target, lessOptimalAnswer.path)
+        println(lessOptimalAnswer.totalCost)
+    }
 }
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -23,6 +29,7 @@ private fun buildGameMat(): GameMat {
         add(Node(0, 0))
         add(Node(0, 3))
         add(Node(1, 2))
+//        add(Node(3, 2))
     }
     val size = Size(5, 4)
     return GameMat(size, obstacles)
