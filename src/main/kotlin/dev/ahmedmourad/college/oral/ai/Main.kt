@@ -9,14 +9,9 @@ fun main() {
     val mat = buildGameMat()
     val initialState = buildInitialState(Node(0, 2), X_POSITIVE)
     val target = Node(2, 2)
-    val answer = UCS().findPath(
-        traversable = mat,
-        initialState = initialState,
-        target = target
-    )
+    val answer = UCS().findPath(mat, initialState, target)
     mat.print(target, answer.correct?.path.orEmpty())
     println(answer.correct?.totalCost)
-
     answer.others.forEach { lessOptimalAnswer ->
         println()
         mat.print(target, lessOptimalAnswer.path)

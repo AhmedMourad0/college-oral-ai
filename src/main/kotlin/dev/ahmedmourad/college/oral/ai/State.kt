@@ -1,3 +1,5 @@
+@file:JvmName("StateUtils")
+
 package dev.ahmedmourad.college.oral.ai
 
 enum class Direction {
@@ -22,3 +24,13 @@ fun buildInitialState(
         path = listOf(Action(position, direction, 0))
     )
 }
+
+fun State.takeAction(action: Action): State {
+    return State(
+        position = action.target,
+        direction = action.direction,
+        totalCost = this.totalCost + action.cost,
+        path = this.path + action
+    )
+}
+
