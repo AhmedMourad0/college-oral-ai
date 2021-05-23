@@ -64,6 +64,10 @@ fun GameMat.print(target: Node, path: List<Action>) {
     }.also(::println)
 }
 
+private fun Node.equals(x: Int, y: Int): Boolean {
+    return this.x == x && this.y == y
+}
+
 private fun GameMat.isAnObstacle(x: Int, y: Int): Boolean {
-    return obstacles.any { it.x == x && it.y == y }
+    return obstacles.any { it.equals(x, y) }
 }
