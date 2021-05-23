@@ -10,7 +10,7 @@ class UCS : Strategy {
     ): Answer {
 
         val visitedNodes = mutableSetOf<Node>()
-        val queue = mutableListOf(initialState)
+        val queue = mutableSetOf(initialState)
 
         while (queue.isNotEmpty()) {
 
@@ -36,6 +36,6 @@ class UCS : Strategy {
             .minByOrNull { it.totalCost }
             ?: return Answer(null)
 
-        return Answer(correct, queue.minus(correct).toSet())
+        return Answer(correct, queue.minus(correct))
     }
 }
