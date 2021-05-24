@@ -2,46 +2,53 @@ package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
 
-class UCS : Strategy<UcsState> {
+class AStar(
+    val heuristic: (current: State, target: Node) -> Int
+) : Strategy<AStarState> {
     override fun findPath(
         traversable: Traversable,
-        initialState: UcsState,
+        initialState: AStarState,
         target: Node
-    ): UcsState? {
+    ): AStarState? {
         return findPathInformed(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selector = { it.totalCost },
-            takeAction = { state, action -> state.takeAction(action) }
+            selector = { it.f },
+            takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
         )
     }
 }
 
-data class UcsState(
+data class AStarState(
     override val position: Node,
     override val direction: Direction,
     override val path: List<Action>,
-    val totalCost: Int
-) : State
+    val totalCost: Int,
+    val h: Int
+) : State {
+    val f = totalCost + h
+}
 
-fun buildInitialUcsState(
+fun buildInitialAStarState(
     position: Node,
     direction: Direction
-): UcsState {
-    return UcsState(
+): AStarState {
+    return AStarState(
         position = position,
         direction = direction,
         path = listOf(Action(position, direction, 0)),
-        totalCost = 0
+        totalCost = 0,
+        h = 0
     )
 }
 
-private fun UcsState.takeAction(action: Action): UcsState {
-    return UcsState(
+private fun AStarState.takeAction(action: Action, h: Int): AStarState {
+    return AStarState(
         position = action.target,
         direction = action.direction,
         path = this.path + action,
-        totalCost = this.totalCost + action.cost
+        totalCost = this.totalCost + action.cost,
+        h = h
     )
 }

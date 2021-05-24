@@ -1,11 +1,9 @@
 package dev.ahmedmourad.college.oral.ai
 
-data class Answer(val correct: State?, val others: Set<State> = emptySet())
-
-interface Strategy {
+interface Strategy<S : State> {
     fun findPath(
         traversable: Traversable,
-        initialState: State,
+        initialState: S,
         target: Node
-    ): Answer
+    ): S?
 }

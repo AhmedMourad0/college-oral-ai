@@ -2,46 +2,48 @@ package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
 
-class UCS : Strategy<UcsState> {
+class Greedy(
+    val heuristic: (current: State, target: Node) -> Int
+) : Strategy<GreedyState> {
     override fun findPath(
         traversable: Traversable,
-        initialState: UcsState,
+        initialState: GreedyState,
         target: Node
-    ): UcsState? {
+    ): GreedyState? {
         return findPathInformed(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selector = { it.totalCost },
-            takeAction = { state, action -> state.takeAction(action) }
+            selector = { it.h },
+            takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
         )
     }
 }
 
-data class UcsState(
+data class GreedyState(
     override val position: Node,
     override val direction: Direction,
     override val path: List<Action>,
-    val totalCost: Int
+    val h: Int
 ) : State
 
-fun buildInitialUcsState(
+fun buildInitialGreedyState(
     position: Node,
     direction: Direction
-): UcsState {
-    return UcsState(
+): GreedyState {
+    return GreedyState(
         position = position,
         direction = direction,
         path = listOf(Action(position, direction, 0)),
-        totalCost = 0
+        h = 0
     )
 }
 
-private fun UcsState.takeAction(action: Action): UcsState {
-    return UcsState(
+private fun GreedyState.takeAction(action: Action, h: Int): GreedyState {
+    return GreedyState(
         position = action.target,
         direction = action.direction,
         path = this.path + action,
-        totalCost = this.totalCost + action.cost
+        h = h
     )
 }
