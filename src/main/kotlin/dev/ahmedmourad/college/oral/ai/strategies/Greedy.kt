@@ -16,7 +16,7 @@ class Greedy(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.minByOrNull { it.h } },
+            selectNextState = { fringe -> fringe.minByOrNull { it.h } },
             takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
         )
     }

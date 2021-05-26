@@ -14,7 +14,7 @@ class DFS : Strategy<GState> {
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.lastOrNull() },
+            selectNextState = { fringe -> fringe.lastOrNull() },
             takeAction = { state, action -> state.takeAction(action) }
         )
     }

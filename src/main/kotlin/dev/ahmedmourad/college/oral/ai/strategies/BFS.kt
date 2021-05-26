@@ -14,7 +14,7 @@ class BFS : Strategy<GState> {
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.firstOrNull() },
+            selectNextState = { fringe -> fringe.firstOrNull() },
             takeAction = { state, action -> state.takeAction(action) }
         )
     }

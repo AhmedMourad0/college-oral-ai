@@ -9,7 +9,7 @@ fun <S : State> findPathImpl(
     traversable: Traversable,
     initialState: S,
     target: Node,
-    selectCurrentState: (fringe: Iterable<S>) -> S?,
+    selectNextState: (fringe: Iterable<S>) -> S?,
     takeAction: (state: S, action: Action) -> S
 ): S? {
 
@@ -20,7 +20,7 @@ fun <S : State> findPathImpl(
 
     while (fringe.isNotEmpty()) {
 
-        val currentState = selectCurrentState(fringe) ?: break
+        val currentState = selectNextState(fringe) ?: break
 
         fringe.remove(currentState)
 

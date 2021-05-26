@@ -16,7 +16,7 @@ class AStar(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.minByOrNull { it.f } },
+            selectNextState = { fringe -> fringe.minByOrNull { it.f } },
             takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
         )
     }

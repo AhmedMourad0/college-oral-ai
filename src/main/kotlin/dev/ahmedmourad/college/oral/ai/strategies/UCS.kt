@@ -14,7 +14,7 @@ class UCS : Strategy<GState> {
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.minByOrNull { it.totalCost } },
+            selectNextState = { fringe -> fringe.minByOrNull { it.totalCost } },
             takeAction = { state, action -> state.takeAction(action) }
         )
     }
