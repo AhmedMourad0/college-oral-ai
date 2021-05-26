@@ -9,7 +9,7 @@ fun <S : State> findPathImpl(
     traversable: Traversable,
     initialState: S,
     target: Node,
-    selectCurrentState: (fringe: Collection<S>) -> S?,
+    selectCurrentState: (fringe: Iterable<S>) -> S?,
     takeAction: (state: S, action: Action) -> S
 ): S? {
 
