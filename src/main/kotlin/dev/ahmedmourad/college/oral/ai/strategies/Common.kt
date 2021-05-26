@@ -5,12 +5,12 @@ import dev.ahmedmourad.college.oral.ai.Node
 import dev.ahmedmourad.college.oral.ai.State
 import dev.ahmedmourad.college.oral.ai.Traversable
 
-fun <S : State> findPathInformed(
+fun <S : State> findPathImpl(
     traversable: Traversable,
     initialState: S,
     target: Node,
-    selector: (S) -> Int,
-    takeAction: (S, Action) -> S
+    selectCurrentState: (fringe: Collection<S>) -> S?,
+    takeAction: (state: S, action: Action) -> S
 ): S? {
 
     val visitedNodes = mutableSetOf<Node>()
@@ -20,7 +20,7 @@ fun <S : State> findPathInformed(
 
     while (fringe.isNotEmpty()) {
 
-        val currentState = fringe.minByOrNull { selector(it) } ?: break
+        val currentState = selectCurrentState(fringe) ?: break
 
         fringe.remove(currentState)
 

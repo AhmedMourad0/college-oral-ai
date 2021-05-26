@@ -1,23 +1,21 @@
 package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
-import dev.ahmedmourad.college.oral.ai.strategies.state.HState
+import dev.ahmedmourad.college.oral.ai.strategies.state.GState
 import dev.ahmedmourad.college.oral.ai.strategies.state.takeAction
 
-class Greedy(
-    val heuristic: (current: State, target: Node) -> Int
-) : Strategy<HState> {
+class DFS : Strategy<GState> {
     override fun findPath(
         traversable: Traversable,
-        initialState: HState,
+        initialState: GState,
         target: Node
-    ): HState? {
+    ): GState? {
         return findPathImpl(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selectCurrentState = { fringe -> fringe.minByOrNull { it.h } },
-            takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
+            selectCurrentState = { fringe -> fringe.lastOrNull() },
+            takeAction = { state, action -> state.takeAction(action) }
         )
     }
 }

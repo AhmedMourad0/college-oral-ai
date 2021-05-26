@@ -4,6 +4,9 @@ import com.jakewharton.picnic.RowDsl
 import com.jakewharton.picnic.table
 import dev.ahmedmourad.college.oral.ai.Direction.*
 import dev.ahmedmourad.college.oral.ai.strategies.*
+import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialFState
+import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialGState
+import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialHState
 import kotlin.math.abs
 
 fun main() {
@@ -13,6 +16,15 @@ fun main() {
     val initialPosition = Node(0, 2)
     val initialDirection = X_POSITIVE
 
+    println()
+    println("BFS:")
+    bfs(mat, target, initialPosition, initialDirection)
+
+    println()
+    println("DFS:")
+    dfs(mat, target, initialPosition, initialDirection)
+
+    println()
     println("UCS:")
     ucs(mat, target, initialPosition, initialDirection)
 
@@ -25,16 +37,40 @@ fun main() {
     aStar(mat, target, initialPosition, initialDirection, ::h1)
 }
 
+private fun bfs(
+    mat: GameMat,
+    target: Node,
+    initialPosition: Node,
+    initialDirection: Direction
+) {
+    val initialState = buildInitialGState(initialPosition, initialDirection)
+    val answer = BFS().findPath(mat, initialState, target)
+    mat.print(target, answer?.path.orEmpty())
+    println("Cost: ${answer?.totalCost}")
+}
+
+private fun dfs(
+    mat: GameMat,
+    target: Node,
+    initialPosition: Node,
+    initialDirection: Direction
+) {
+    val initialState = buildInitialGState(initialPosition, initialDirection)
+    val answer = DFS().findPath(mat, initialState, target)
+    mat.print(target, answer?.path.orEmpty())
+    println("Cost: ${answer?.totalCost}")
+}
+
 private fun ucs(
     mat: GameMat,
     target: Node,
     initialPosition: Node,
     initialDirection: Direction
 ) {
-    val initialState = buildInitialUcsState(initialPosition, initialDirection)
+    val initialState = buildInitialGState(initialPosition, initialDirection)
     val answer = UCS().findPath(mat, initialState, target)
     mat.print(target, answer?.path.orEmpty())
-    println(answer?.totalCost)
+    println("Cost: ${answer?.totalCost}")
 }
 
 private fun greedy(
@@ -44,7 +80,7 @@ private fun greedy(
     initialDirection: Direction,
     heuristic: (State, Node) -> Int
 ) {
-    val initialState = buildInitialGreedyState(initialPosition, initialDirection)
+    val initialState = buildInitialHState(initialPosition, initialDirection)
     val answer = Greedy(heuristic).findPath(mat, initialState, target)
     mat.print(target, answer?.path.orEmpty())
 }
@@ -56,10 +92,10 @@ private fun aStar(
     initialDirection: Direction,
     heuristic: (State, Node) -> Int
 ) {
-    val initialState = buildInitialAStarState(initialPosition, initialDirection)
+    val initialState = buildInitialFState(initialPosition, initialDirection)
     val answer = AStar(heuristic).findPath(mat, initialState, target)
     mat.print(target, answer?.path.orEmpty())
-    println(answer?.totalCost)
+    println("Cost: ${answer?.totalCost}")
 }
 
 private fun h1(current: State, target: Node): Int {

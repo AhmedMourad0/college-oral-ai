@@ -1,54 +1,23 @@
 package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
+import dev.ahmedmourad.college.oral.ai.strategies.state.FState
+import dev.ahmedmourad.college.oral.ai.strategies.state.takeAction
 
 class AStar(
     val heuristic: (current: State, target: Node) -> Int
-) : Strategy<AStarState> {
+) : Strategy<FState> {
     override fun findPath(
         traversable: Traversable,
-        initialState: AStarState,
+        initialState: FState,
         target: Node
-    ): AStarState? {
-        return findPathInformed(
+    ): FState? {
+        return findPathImpl(
             traversable = traversable,
             initialState = initialState,
             target = target,
-            selector = { it.f },
+            selectCurrentState = { fringe -> fringe.minByOrNull { it.f } },
             takeAction = { state, action -> state.takeAction(action, heuristic(state, target)) }
         )
     }
-}
-
-data class AStarState(
-    override val position: Node,
-    override val direction: Direction,
-    override val path: List<Action>,
-    val totalCost: Int,
-    val h: Int
-) : State {
-    val f = totalCost + h
-}
-
-fun buildInitialAStarState(
-    position: Node,
-    direction: Direction
-): AStarState {
-    return AStarState(
-        position = position,
-        direction = direction,
-        path = listOf(Action(position, direction, 0)),
-        totalCost = 0,
-        h = 0
-    )
-}
-
-private fun AStarState.takeAction(action: Action, h: Int): AStarState {
-    return AStarState(
-        position = action.target,
-        direction = action.direction,
-        path = this.path + action,
-        totalCost = this.totalCost + action.cost,
-        h = h
-    )
 }
