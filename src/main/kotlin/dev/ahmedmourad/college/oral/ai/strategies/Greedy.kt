@@ -1,8 +1,8 @@
 package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
-import dev.ahmedmourad.college.oral.ai.strategies.state.HState
-import dev.ahmedmourad.college.oral.ai.strategies.state.takeAction
+import dev.ahmedmourad.college.oral.ai.state.HState
+import dev.ahmedmourad.college.oral.ai.state.takeAction
 
 class Greedy(
     val heuristic: (current: State, target: Node) -> Int

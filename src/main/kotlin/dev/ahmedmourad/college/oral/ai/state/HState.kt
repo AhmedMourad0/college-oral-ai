@@ -1,39 +1,34 @@
-package dev.ahmedmourad.college.oral.ai.strategies.state
+package dev.ahmedmourad.college.oral.ai.state
 
 import dev.ahmedmourad.college.oral.ai.Action
 import dev.ahmedmourad.college.oral.ai.Direction
 import dev.ahmedmourad.college.oral.ai.Node
 import dev.ahmedmourad.college.oral.ai.State
 
-data class FState(
+data class HState(
     override val position: Node,
     override val direction: Direction,
     override val path: List<Action>,
-    val totalCost: Int,
     val h: Int
-) : State {
-    val f = totalCost + h
-}
+) : State
 
-fun buildInitialFState(
+fun buildInitialHState(
     position: Node,
     direction: Direction
-): FState {
-    return FState(
+): HState {
+    return HState(
         position = position,
         direction = direction,
         path = listOf(Action(position, direction, 0)),
-        totalCost = 0,
         h = 0
     )
 }
 
-fun FState.takeAction(action: Action, h: Int): FState {
-    return FState(
+fun HState.takeAction(action: Action, h: Int): HState {
+    return HState(
         position = action.target,
         direction = action.direction,
         path = this.path + action,
-        totalCost = this.totalCost + action.cost,
         h = h
     )
 }

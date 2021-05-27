@@ -1,8 +1,8 @@
 package dev.ahmedmourad.college.oral.ai.strategies
 
 import dev.ahmedmourad.college.oral.ai.*
-import dev.ahmedmourad.college.oral.ai.strategies.state.GState
-import dev.ahmedmourad.college.oral.ai.strategies.state.takeAction
+import dev.ahmedmourad.college.oral.ai.state.GState
+import dev.ahmedmourad.college.oral.ai.state.takeAction
 
 class UCS : Strategy<GState> {
     override fun findPath(

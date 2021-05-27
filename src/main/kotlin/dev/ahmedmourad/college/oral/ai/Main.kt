@@ -4,9 +4,9 @@ import com.jakewharton.picnic.RowDsl
 import com.jakewharton.picnic.table
 import dev.ahmedmourad.college.oral.ai.Direction.*
 import dev.ahmedmourad.college.oral.ai.strategies.*
-import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialFState
-import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialGState
-import dev.ahmedmourad.college.oral.ai.strategies.state.buildInitialHState
+import dev.ahmedmourad.college.oral.ai.state.buildInitialFState
+import dev.ahmedmourad.college.oral.ai.state.buildInitialGState
+import dev.ahmedmourad.college.oral.ai.state.buildInitialHState
 import kotlin.math.abs
 
 fun main() {
